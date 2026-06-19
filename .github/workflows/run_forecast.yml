@@ -5,9 +5,6 @@ on: [push, workflow_dispatch]
 jobs:
   forecast_and_update:
     runs-on: ubuntu-latest
-    
-    permissions:
-      contents: write
 
     steps:
     - name: Checkout repository
@@ -23,15 +20,14 @@ jobs:
         sudo apt-get update && sudo apt-get install -y libproj-dev proj-data proj-bin libgeos-dev
         pip install pandas matplotlib cartopy requests
 
+    # 1. 執行 Python 腳本抓取真實數據並畫圖 (存到 output/ 目錄)
     - name: Run Typhoon Forecast Script
       run: python src/auto_forecast.py
 
-    - name: Commit and push changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action Bot"
-        git add output/latest_typhoon_track.png
-        git commit -m "Auto: 雲端排程自動更新最新颱風預報圖" || exit 0
-        
-        # 🔑 【核心修正】直接將雲端動態產生的密鑰帶入網址，強制突破 128 限制
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
+    # 2. 📦 核心改動：直接把產出的圖片打包，上傳到 GitHub 的雲端成品區
+    - name: Upload Typhoon Plot Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: latest-typhoon-plot
+        path: output/latest_typhoon_track.png
+        retention-days: 7
