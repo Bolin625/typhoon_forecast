@@ -1,0 +1,31 @@
+﻿name: Typhoon Auto Forecast Pipeline
+
+on: [push, workflow_dispatch]
+
+jobs:
+  forecast_and_update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libproj-dev proj-data proj-bin libgeos-dev
+        pip install pandas matplotlib cartopy
+
+    - name: Run Typhoon Forecast Script
+      run: python src/auto_forecast.py
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action Bot"
+        git add output/latest_typhoon_track.png
+        git commit -m "Auto: 雲端排程自動更新最新颱風預報圖" || exit 0
+        git push
