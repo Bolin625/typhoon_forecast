@@ -16,7 +16,7 @@ def generate_ensemble_data():
     ensemble_tracks = []
     
     # 產生 50 條不同可能性的 AI 預測路線 (Ensemble Members)
-    for i in range(50):
+    for i in range(300):
         # 每一條路線都有不同的偏向角度與速度 (模擬 AI 模型的隨機擾動)
         angle_shift = np.random.normal(0, 0.15)
         speed_shift = np.random.uniform(0.8, 1.3)
@@ -85,7 +85,7 @@ def run_pipeline():
         elif mslp <= 1000: return '#3A75C4', 15
         else: return '#AEC9FF', 10
 
-    print("🎨 正在為 50 條 AI 模型線條進行增強渲染與著色...")
+    print("🎨 正在為 300 條 AI 模型線條進行增強渲染與著色...")
     
     # 先畫線 (加上半透明，形成震撼的「線條海」效果)
     for track in tracks:
@@ -100,7 +100,7 @@ def run_pipeline():
             plt.scatter(lon, lat, color=color, s=size, zorder=3, alpha=0.8, edgecolors='none')
 
     # 5. 精緻標籤與右上角「最低氣壓」指示牌
-    plt.text(145, 35, f"min. MSLP: {min_overall_mslp:.1f} hPa", color='darkred', 
+    plt.text(148, 42, f"min. MSLP: {min_overall_mslp:.1f} hPa", color='darkred', 
              fontweight='bold', fontsize=10,
              bbox=dict(boxstyle="round,pad=0.3", fc="#FFF0F0", ec="red", lw=1))
 
