@@ -100,7 +100,7 @@ def run_pipeline():
             plt.scatter(lon, lat, color=color, s=size, zorder=3, alpha=0.8, edgecolors='none')
 
     # 5. 精緻標籤與右上角「最低氣壓」指示牌
-    plt.text(152, 49.5, f"min. MSLP: {min_overall_mslp:.1f} hPa", color='darkred', 
+    plt.text(145, 35, f"min. MSLP: {min_overall_mslp:.1f} hPa", color='darkred', 
              fontweight='bold', fontsize=10,
              bbox=dict(boxstyle="round,pad=0.3", fc="#FFF0F0", ec="red", lw=1))
 
@@ -119,7 +119,7 @@ def run_pipeline():
     plt.title("FNV3 Ensemble Forecast for Tropical Cyclone (0-360 hours)\nData sourced from Google DeepMind  |  Initial time: 2026-06-19-12Z", 
               fontsize=12, fontweight='bold', pad=15)
     
-    plt.text(159, 5.5, "By AI-Pipeline Test", fontsize=9, fontstyle='italic', ha='right')
+    plt.text(159, 5.5, "By Bolin", fontsize=9, fontstyle='italic', ha='right')
 
     os.makedirs('output', exist_ok=True)
     plt.savefig('output/latest_typhoon_track.png', dpi=180, bbox_inches='tight')
